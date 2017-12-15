@@ -63,9 +63,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+
     username = models.CharField(max_length=16, unique=True)
-    # recordar validar client null, blank
-    client = models.ForeignKey(Client, null=True, blank=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
@@ -86,13 +86,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class CreditCard(models.Model):
-    # revisar todo null, blank tiene que generarse automaticamente
-    num_card = models.IntegerField(unique=True, null=True, blank=True)
-    expiration_date = models.DateField(null=True, blank=True)
-    num_cvv = models.IntegerField(null=True, blank=True)
+
+    num_card = models.IntegerField(unique=True)
+    expiration_date = models.DateField()
+    num_cvv = models.IntegerField()
     validity_status = models.BooleanField(default=True)
     blocking_status = models.BooleanField(default=False)
-    num_pin = models.IntegerField(null=True, blank=True)
+    num_pin = models.IntegerField()
 
     def __str__(self):
         return '%s' % (self.num_card)
@@ -105,13 +105,13 @@ class Account(models.Model):
         ('D', 'DOLARES'),
         ('E', 'EUROS'),
     )
-    # revisar todo null, blank tiene que generarse automaticamente
+
     num_account = models.CharField(
-        max_length=14, unique=True, null=True, blank=True)
-    client = models.ForeignKey(Client)
-    card = models.ForeignKey(CreditCard)
+        max_length=14, unique=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    card = models.ForeignKey(CreditCard, on_delete=models.CASCADE)
     associated_currency = models.CharField(
-        max_length=1, choices=CURRENCY_CHOICES)
+        max_length=1, choices=CURRENCY_CHOICES, default='S')
     current_balance = models.DecimalField(
         decimal_places=4, max_digits=7, default=0)
     maintenance_cost = models.DecimalField(

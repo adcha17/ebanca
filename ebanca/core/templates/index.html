@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Client List View
+{% endblock title %}
+
+{% block content %}
+  {% if not user.is_authenticated %}
+    <h1>ANONIMO</h1>
+  {% else %}
+    <h1>Bienvenido {{user.username}}</h1>
+    <a href="/logout/">Logout</a>
+  {% endif %}
+
+  <h2>Client List</h2>
+  {% for object in clients %}
+    <p>{{ object.name }} - {{ object.document_number }}</p>
+  {% endfor %}
+  <hr>
+  <h2>Users List</h2>
+  {% for object in users %}
+    <p>{{ object.username }}</p>
+  {% endfor %}
+  
+{% endblock content %}

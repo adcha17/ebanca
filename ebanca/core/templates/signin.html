@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Signin
+{% endblock title %}
+
+{% block content %}
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Login">
+  </form>
+  {% load staticfiles %}
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/jquery.plugin.js' %}"></script>
+  <script src="{% static 'js/jquery.keypad.js' %}"></script>
+  <script>
+    $(function(){
+      console.log($('#id_num_pin'))
+      console.log('go')
+      $('#id_num_pin').keypad({showOn: 'both', randomiseNumeric: true});
+    });
+  </script>
+{% endblock content %}
